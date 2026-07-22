@@ -1,0 +1,25 @@
+# Node.js
+node_modules/
+dist/
+build/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+env/
+.venv/
+
+# Environment Variables and Secrets
+.env
+.env.*
+serviceAccountKey.json
+
+# IDEs and OS files
+.vscode/
+.idea/
+.DS_Store
+*.suo
+*.user
