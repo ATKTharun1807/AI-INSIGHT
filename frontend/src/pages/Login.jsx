@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { ArrowLeft } from 'lucide-react';
 
 function Login() {
   const { loginWithGoogle, loginAsGuest, currentUser, login, signup } = useAuth();
@@ -59,9 +60,34 @@ function Login() {
   const isMissingConfig = !import.meta.env.VITE_FIREBASE_API_KEY;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC]">
-      <div className="max-w-md w-full bg-white p-8 rounded-xl border border-gray-200 shadow-sm text-center">
-        <div className="w-12 h-12 bg-[#111827] rounded mx-auto flex items-center justify-center mb-6">
+    <div className="min-h-screen flex items-center justify-center relative bg-white overflow-hidden">
+      
+      {/* Light Grid Background */}
+      <div 
+        className="absolute inset-0 z-0" 
+        style={{
+          backgroundImage: 'radial-gradient(#e5e7eb 1px, transparent 1px)',
+          backgroundSize: '32px 32px'
+        }}
+      ></div>
+
+      {/* Blue Blob */}
+      <div className="absolute top-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-blue-100/80 blur-3xl z-0"></div>
+      
+      {/* Purple Blob */}
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40vw] h-[40vw] rounded-full bg-purple-100/80 blur-3xl z-0"></div>
+      
+      <button 
+        onClick={() => navigate('/')}
+        className="absolute top-6 left-6 z-20 flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors bg-white/60 hover:bg-white border border-gray-200 px-4 py-2 rounded-lg backdrop-blur-md shadow-sm"
+      >
+        <ArrowLeft className="w-4 h-4" />
+        <span className="font-medium text-sm">Back</span>
+      </button>
+
+      {/* Centered Card */}
+      <div className="max-w-md w-full relative z-10 bg-white/80 backdrop-blur-xl p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] text-center border border-gray-100">
+        <div className="w-12 h-12 bg-[#111827] rounded-xl mx-auto flex items-center justify-center mb-6">
           <span className="text-white font-bold text-xl">IA</span>
         </div>
         
@@ -88,7 +114,7 @@ function Login() {
               placeholder="Email Address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/50"
               required
             />
           </div>
@@ -98,14 +124,14 @@ function Login() {
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/50"
               required
             />
           </div>
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#111827] text-white font-medium py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50"
+            className="w-full bg-[#111827] text-white font-medium py-3 px-4 rounded-xl hover:bg-gray-800 transition-colors disabled:opacity-50"
           >
             {isRegistering ? 'Sign Up' : 'Sign In'}
           </button>
@@ -129,7 +155,7 @@ function Login() {
           <button
             onClick={handleGoogleLogin}
             disabled={loading || isMissingConfig}
-            className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 text-gray-700 font-medium py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+            className="w-full flex items-center justify-center gap-3 bg-white border border-gray-200 text-gray-700 font-medium py-3 px-4 rounded-xl hover:bg-gray-50 transition-colors disabled:opacity-50"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -144,13 +170,13 @@ function Login() {
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-200"></div>
             </div>
-            <div className="relative bg-white px-4 text-sm text-gray-500">or</div>
+            <div className="relative bg-transparent px-4 text-sm text-gray-500">or</div>
           </div>
           
           <button
             onClick={handleGuestLogin}
             disabled={loading}
-            className="w-full flex items-center justify-center gap-3 bg-gray-900 text-white font-medium py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50"
+            className="w-full flex items-center justify-center gap-3 bg-gray-900 text-white font-medium py-3 px-4 rounded-xl hover:bg-gray-800 transition-colors disabled:opacity-50"
           >
             Continue as Guest
           </button>
