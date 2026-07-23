@@ -3,6 +3,13 @@ from fastapi.middleware.cors import CORSMiddleware
 import models
 from database import engine
 from routers import auth, datasets, analysis
+import firebase_admin
+from firebase_admin import credentials
+
+# Initialize Firebase Admin SDK
+cred = credentials.Certificate("firebase-adminsdk.json")
+if not firebase_admin._apps:
+    firebase_admin.initialize_app(cred)
 
 models.Base.metadata.create_all(bind=engine)
 

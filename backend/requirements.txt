@@ -28,3 +28,4 @@ docx2txt
 unstructured
 
 tiktoken
+firebase-admin

@@ -3,7 +3,10 @@ import { useNavigate, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 function Login() {
-  const { loginWithGoogle, loginAsGuest, currentUser } = useAuth();
+  const { loginWithGoogle, loginAsGuest, currentUser, login, signup } = useAuth();
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -26,6 +29,28 @@ function Login() {
     }
   }
 
+  async function handleEmailSubmit(e) {
+    e.preventDefault();
+    if (!email || !password) {
+      setError('Please enter both email and password.');
+      return;
+    }
+    try {
+      setError('');
+      setLoading(true);
+      if (isRegistering) {
+        await signup(email, password);
+      } else {
+        await login(email, password);
+      }
+      navigate('/dashboard');
+    } catch (err) {
+      setError('Failed to ' + (isRegistering ? 'register' : 'log in') + ': ' + err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   function handleGuestLogin() {
     loginAsGuest();
     navigate('/dashboard');
@@ -40,8 +65,12 @@ function Login() {
           <span className="text-white font-bold text-xl">IA</span>
         </div>
         
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome to InsightAI</h2>
-        <p className="text-gray-500 mb-6">Sign in to access your Enterprise Document Intelligence workspace.</p>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+          {isRegistering ? 'Create an Account' : 'Welcome to InsightAI'}
+        </h2>
+        <p className="text-gray-500 mb-6">
+          {isRegistering ? 'Sign up' : 'Sign in'} to access your Enterprise Document Intelligence workspace.
+        </p>
         
         {isMissingConfig && (
           <div className="mb-6 text-sm text-amber-700 bg-amber-50 border border-amber-200 p-4 rounded-lg text-left">
@@ -51,6 +80,50 @@ function Login() {
         )}
         
         {error && <div className="mb-4 text-sm text-red-600 bg-red-50 border border-red-200 p-3 rounded">{error}</div>}
+        
+        <form onSubmit={handleEmailSubmit} className="space-y-4 mb-4">
+          <div>
+            <input
+              type="email"
+              placeholder="Email Address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+          <div>
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-[#111827] text-white font-medium py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50"
+          >
+            {isRegistering ? 'Sign Up' : 'Sign In'}
+          </button>
+        </form>
+
+        <div className="text-sm text-gray-600 mb-6">
+          {isRegistering ? 'Already have an account?' : "Don't have an account?"}{' '}
+          <button
+            type="button"
+            onClick={() => {
+              setIsRegistering(!isRegistering);
+              setError('');
+            }}
+            className="text-blue-600 hover:underline font-medium"
+          >
+            {isRegistering ? 'Sign In' : 'Sign Up'}
+          </button>
+        </div>
         
         <div className="space-y-3">
           <button

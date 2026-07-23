@@ -16,6 +16,7 @@ env/
 .env
 .env.*
 serviceAccountKey.json
+firebase-adminsdk.json
 
 # IDEs and OS files
 .vscode/
